@@ -1,0 +1,11 @@
+in:
+  type: file
+  path_prefix: '/home/embulk/books/csv/BX-'
+out:
+  type: mysql
+  host: db
+  user: root
+  password: root
+  database: test-database
+  table: books
+  mode: insert

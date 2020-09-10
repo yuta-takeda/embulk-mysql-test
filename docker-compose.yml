@@ -1,0 +1,29 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    container_name: demo_mysql
+    build:
+      context: .
+      dockerfile: ./Dockerfile_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test-database
+      MYSQL_USER: embulkuser
+      MYSQL_PASSWORD: password
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./db/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+
+  embulk:
+    image: embulk
+    container_name: demo_embulk
+    build:
+      context: .
+      dockerfile: ./Dockerfile_embulk
+    volumes:
+      - ./embulk:/home/embulk
+    tty: true

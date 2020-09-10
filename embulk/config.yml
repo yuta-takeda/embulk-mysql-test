@@ -1,0 +1,29 @@
+in:
+  type: file
+  path_prefix: /home/embulk/books/csv/BX-
+  parser:
+    charset: UTF-8
+    newline: CRLF
+    type: csv
+    delimiter: ;
+    quote: '"'
+    escape: '"'
+    trim_if_not_quoted: false
+    skip_header_lines: 1
+    allow_extra_columns: false
+    allow_optional_columns: false
+    columns:
+    - {name: ISBN, type: string}
+    - {name: Book-Title, type: string}
+    - {name: Book-Author, type: string}
+    - {name: Year-Of-Publication, type: long}
+    - {name: Publisher, type: string}
+    - {name: Image-URL-S, type: string}
+    - {name: Image-URL-M, type: string}
+    - {name: Image-URL-L, type: string}
+out: {type: mysql, host: db, user: root, password: root, database: test-database,
+  table: books, mode: truncate_insert}
+filters:
+  - type: mask
+    columns:
+      - { name: Publisher, type: regex, pattern: "[a-z]" }
